@@ -1,6 +1,6 @@
 import { Grid, GridItem, Heading } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Card from '../components/Card';
 
 import Carousel from '../components/Carousel';
@@ -8,6 +8,7 @@ import FilterContainer from '../components/FilterContainer';
 import { getAllProperties, getFilteredProperties } from '../data/api';
 
 const Home = ({ isSearch }) => {
+  const { pathname } = useLocation();
   const navigator = useNavigate();
   const [searchParams] = useSearchParams();
   const [properties, setProperties] = useState([]);
@@ -16,30 +17,25 @@ const Home = ({ isSearch }) => {
     moveInDate: searchParams.get('moveInDate') || '',
     priceRange: searchParams.get('priceRange') || '',
     propertyType: searchParams.get('propertyType') || '',
-    needFilter: isSearch,
   });
 
   useEffect(() => {
-    if (filterValues.needFilter) {
-      const params = new URLSearchParams();
-      filterValues.propertyType &&
-        params.append('propertyType', filterValues.propertyType);
-      filterValues.location && params.append('location', filterValues.location);
-      filterValues.priceRange &&
-        params.append('priceRange', filterValues.priceRange);
-      filterValues.moveInDate &&
-        params.append('moveInDate', filterValues.moveInDate);
-
-      navigator(`/search?${params.toString()}`);
+    if (pathname === '/search') {
       const newProperties = getFilteredProperties(filterValues);
       setProperties(newProperties);
     } else {
       setProperties(getAllProperties());
     }
-  }, [filterValues, navigator]);
+  }, [filterValues, pathname]);
 
   const handleSubmit = (e, values) => {
     e.preventDefault();
+    const params = new URLSearchParams();
+    values.propertyType && params.append('propertyType', values.propertyType);
+    values.location && params.append('location', values.location);
+    values.priceRange && params.append('priceRange', values.priceRange);
+    values.moveInDate && params.append('moveInDate', values.moveInDate);
+    navigator(`/search?${params.toString()}`);
     setFilterValues(values);
   };
 

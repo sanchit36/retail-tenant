@@ -27,7 +27,6 @@ export const getFilteredProperties = filterValues => {
 
     newFilteredProperties = newFilteredProperties.filter(property => {
       const price = Number(property.price.split('$')[1].split(',').join(''));
-      console.log(price);
       return price >= min && price <= max;
     });
   }

@@ -57,7 +57,6 @@ const FilterContainer = ({ filterValues, handleSubmit }) => {
             moveInDate,
             priceRange: priceRange.join('-'),
             propertyType,
-            needFilter: true,
           })
         }
       >

@@ -14,7 +14,9 @@ const Header = () => {
       <Container as="nav" maxW="1200px" px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <Heading fontSize="xl">
-            <Link to="/">Retail Tenant</Link>
+            <Link to="/" state={{ isSearch: false }}>
+              Retail Tenant
+            </Link>
           </Heading>
 
           <ColorModeSwitcher />
